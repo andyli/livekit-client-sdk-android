@@ -193,7 +193,13 @@ class CallViewModel(
                             Timber.d { "Room event: Reconnecting" }
                         }
                         is RoomEvent.Reconnected -> {
-                            Timber.d { "Room event: Reconnected" }
+                            Timber.d {
+                                "Room event: Reconnected" +
+                                "\n microphone enabled: ${room.localParticipant.isMicrophoneEnabled()}" +
+                                "\n camera enabled: ${room.localParticipant.isCameraEnabled()}"
+                            }
+                            room.localParticipant.setMicrophoneEnabled(true)
+                            room.localParticipant.setCameraEnabled(true)
                         }
                         is RoomEvent.TrackPublished -> {
                             Timber.d { "published track: ${it.publication.kind} ${it.publication.sid}" }
