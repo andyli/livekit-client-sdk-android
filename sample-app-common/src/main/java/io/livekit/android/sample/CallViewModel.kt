@@ -183,6 +183,26 @@ class CallViewModel(
                             val message = it.data.toString(Charsets.UTF_8)
                             mutableDataReceived.emit("$identity: $message")
                         }
+                        is RoomEvent.Connected -> {
+                            Timber.d { "Room event: Connected" }
+                        }
+                        is RoomEvent.Disconnected -> {
+                            Timber.d { "Room event: Disconnected" }
+                        }
+                        is RoomEvent.Reconnecting -> {
+                            Timber.d { "Room event: Reconnecting" }
+                        }
+                        is RoomEvent.Reconnected -> {
+                            Timber.d { "Room event: Reconnected" }
+                        }
+                        is RoomEvent.TrackPublished -> {
+                            Timber.d { "published track: ${it.publication.kind} ${it.publication.sid}" }
+                            Timber.d {
+                                val tracks = room.localParticipant.trackPublications
+                                    .map { "  ${it.value.kind} ${it.value.sid}" }
+                                "Current tracks (${tracks.size}):\n${tracks.joinToString("\n")}"
+                            }
+                        }
 
                         else -> {
                             Timber.e { "Room event: $it" }
